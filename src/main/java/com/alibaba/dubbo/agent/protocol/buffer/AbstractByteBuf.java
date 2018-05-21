@@ -22,6 +22,11 @@ public abstract class AbstractByteBuf implements ByteBuf {
         return capacity;
     }
 
+    @Override
+    public boolean hasMore() {
+        return readerIndex < writerIndex;
+    }
+
     //重置写位置
     @Override
     public void resetWriterIndex() {

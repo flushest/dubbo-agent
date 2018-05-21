@@ -16,6 +16,8 @@ public interface ByteBuf {
     //获取可用字节数
     int getCapacity();
 
+    boolean hasMore();
+
     //重置写位置
     void resetWriterIndex();
 

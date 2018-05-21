@@ -1,18 +1,34 @@
 package com.alibaba.dubbo.agent.protocol.dubbo;
 
-import com.alibaba.dubbo.agent.protocol.MessageCodec;
+import com.alibaba.dubbo.agent.protocol.AbstractMessageCodec;
 import com.alibaba.dubbo.agent.protocol.buffer.ByteBuf;
+import com.alibaba.dubbo.agent.protocol.model.RpcInvocation;
+import com.alibaba.dubbo.agent.protocol.model.RpcResult;
 
-import java.util.List;
+public class DubboCodec extends AbstractMessageCodec {
 
-public class DubboCodec implements MessageCodec {
     @Override
-    public void encode(Object message, ByteBuf byteBuf) {
+    protected void encodeRequestBody(RpcInvocation invocation, ByteBuf byteBuf) {
 
     }
 
     @Override
-    public void decode(List<Object> messages, ByteBuf byteBuf) {
+    protected void encodeResponseBody(RpcResult result, ByteBuf byteBuf) {
 
+    }
+
+    @Override
+    protected boolean isRequestForDecode(ByteBuf byteBuf) {
+        return false;
+    }
+
+    @Override
+    protected RpcInvocation decodeRequestBody(ByteBuf byteBuf) {
+        return null;
+    }
+
+    @Override
+    protected RpcResult decodeResponseBody(ByteBuf byteBuf) {
+        return null;
     }
 }
