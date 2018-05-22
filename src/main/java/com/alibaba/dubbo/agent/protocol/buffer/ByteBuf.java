@@ -6,9 +6,14 @@ package com.alibaba.dubbo.agent.protocol.buffer;
 public interface ByteBuf {
     //写缓冲区
     int write(byte[] bytes);
+    int writeInt(int d);
+    int writeLong(long d);
+    int writeBuf(ByteBuf d);
 
     //读缓存区
     byte[] read(int length);
+    int readInt();
+    long readLong();
 
     //读取整个缓冲区
     byte[] readAll();
@@ -26,4 +31,6 @@ public interface ByteBuf {
 
     //重置读写位置
     void reset();
+
+
 }

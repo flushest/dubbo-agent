@@ -1,5 +1,7 @@
 package com.alibaba.dubbo.agent.protocol.buffer;
 
+import com.alibaba.dubbo.agent.common.util.Bytes;
+
 public abstract class AbstractByteBuf implements ByteBuf {
     protected byte[] bytes;
     protected int capacity;
@@ -14,6 +16,31 @@ public abstract class AbstractByteBuf implements ByteBuf {
     public AbstractByteBuf(int initLen) {
         capacity = initLen;
         bytes = new byte[capacity];
+    }
+
+    public int writeInt(int d) {
+        return write(Bytes.int2bytes(d));
+    }
+
+    public int writeLong(long d) {
+        return write(Bytes.long2bytes(d));
+    }
+
+    public int writeBuf(ByteBuf d) {
+        return write(d.readAll());
+    }
+
+
+    @Override
+    public int readInt() {
+        byte[] bs = read(4);
+        return Bytes.bytes2int(bs);
+    }
+
+    @Override
+    public long readLong() {
+        byte[] bs = read(8);
+        return Bytes.bytes2long(bs);
     }
 
     //获取缓存区长度

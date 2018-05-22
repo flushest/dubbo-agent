@@ -1,5 +1,6 @@
 package com.alibaba.dubbo.agent.protocol.dubbo;
 
+import com.alibaba.dubbo.agent.common.CodecException;
 import com.alibaba.dubbo.agent.protocol.AbstractMessageCodec;
 import com.alibaba.dubbo.agent.protocol.buffer.ByteBuf;
 import com.alibaba.dubbo.agent.protocol.model.RpcInvocation;
@@ -8,27 +9,18 @@ import com.alibaba.dubbo.agent.protocol.model.RpcResult;
 public class DubboCodec extends AbstractMessageCodec {
 
     @Override
-    protected void encodeRequestBody(RpcInvocation invocation, ByteBuf byteBuf) {
+    protected void encodeBody(Object obj, ByteBuf byteBuf) {
+        if(obj instanceof RpcInvocation) {
 
+        }else if(obj instanceof RpcResult) {
+
+        }else {
+            throw new CodecException("不支持的编码类型:" + obj.getClass().getName());
+        }
     }
 
     @Override
-    protected void encodeResponseBody(RpcResult result, ByteBuf byteBuf) {
-
-    }
-
-    @Override
-    protected boolean isRequestForDecode(ByteBuf byteBuf) {
-        return false;
-    }
-
-    @Override
-    protected RpcInvocation decodeRequestBody(ByteBuf byteBuf) {
-        return null;
-    }
-
-    @Override
-    protected RpcResult decodeResponseBody(ByteBuf byteBuf) {
+    protected Object decodeBody(ByteBuf byteBuf) {
         return null;
     }
 }

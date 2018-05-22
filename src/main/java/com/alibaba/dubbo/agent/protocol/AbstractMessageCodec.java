@@ -12,31 +12,18 @@ import java.util.List;
 public abstract class AbstractMessageCodec implements MessageCodec {
     @Override
     public void encode(Object message, ByteBuf byteBuf) {
-        //编码
-        if(message instanceof RpcInvocation) {
-
-        }
+        encodeBody(message, byteBuf);
     }
 
-    protected abstract void encodeRequestBody(RpcInvocation invocation, ByteBuf byteBuf);
-
-    protected abstract void encodeResponseBody(RpcResult result, ByteBuf byteBuf);
-
+    protected abstract void encodeBody(Object obj, ByteBuf byteBuf);
 
     @Override
     public void decode(List<Object> messages, ByteBuf byteBuf) {
         while(byteBuf.hasMore()) {
-            if(isRequestForDecode(byteBuf)) {
-                messages.add(decodeRequestBody(byteBuf));
-            }else {
-                messages.add(decodeResponseBody(byteBuf));
-            }
+            messages.add(decodeBody(byteBuf));
         }
     }
 
-    protected abstract boolean isRequestForDecode(ByteBuf byteBuf);
+    protected abstract Object decodeBody(ByteBuf byteBuf);
 
-    protected abstract RpcInvocation decodeRequestBody(ByteBuf byteBuf);
-
-    protected abstract RpcResult decodeResponseBody(ByteBuf byteBuf);
 }
