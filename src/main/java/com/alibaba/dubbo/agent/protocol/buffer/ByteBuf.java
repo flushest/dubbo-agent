@@ -8,6 +8,7 @@ public interface ByteBuf {
     int write(byte[] bytes);
     int writeInt(int d);
     int writeLong(long d);
+    int writeShort(short d);
     int writeBuf(ByteBuf d);
     int writeByte(byte b);
     int writeBytes(byte[] src, int index, int length);
@@ -25,14 +26,17 @@ public interface ByteBuf {
     //获取可用字节数
     int readableBytes();
 
-    boolean hasMore();
-
     int readerIndex();
+    void readerIndex(int readerIndex);
     int writerIndex();
+    void writerIndex(int writerIndex);
 
     void skipBytes(int length);
 
     boolean readable();
+
+    void markReaderIndex();
+    void markWriterIndex();
 
     //重置写位置
     void resetWriterIndex();

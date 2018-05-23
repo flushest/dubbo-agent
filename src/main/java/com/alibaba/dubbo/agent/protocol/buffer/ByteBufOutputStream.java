@@ -20,12 +20,12 @@ package com.alibaba.dubbo.agent.protocol.buffer;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class ChannelBufferOutputStream extends OutputStream {
+public class ByteBufOutputStream extends OutputStream {
 
     private final ByteBuf buffer;
     private final int startIndex;
 
-    public ChannelBufferOutputStream(ByteBuf buffer) {
+    public ByteBufOutputStream(ByteBuf buffer) {
         if (buffer == null) {
             throw new NullPointerException("buffer");
         }

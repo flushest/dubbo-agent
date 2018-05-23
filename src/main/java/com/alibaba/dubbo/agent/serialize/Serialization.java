@@ -17,7 +17,6 @@
 package com.alibaba.dubbo.agent.serialize;
 
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -45,17 +44,15 @@ public interface Serialization {
      *
      * @param output
      * @return serializer
-     * @throws IOException
      */
-    ObjectOutput serialize(OutputStream output) throws IOException;
+    ObjectOutput serialize(OutputStream output);
 
     /**
      * create deserializer
      *
      * @param input
      * @return deserializer
-     * @throws IOException
      */
-    ObjectInput deserialize(InputStream input) throws IOException;
+    ObjectInput deserialize(InputStream input);
 
 }

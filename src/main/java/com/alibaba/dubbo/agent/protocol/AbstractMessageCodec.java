@@ -4,6 +4,7 @@ import com.alibaba.dubbo.agent.protocol.buffer.ByteBuf;
 import com.alibaba.dubbo.agent.protocol.model.RpcInvocation;
 import com.alibaba.dubbo.agent.protocol.model.RpcResult;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -11,19 +12,19 @@ import java.util.List;
  */
 public abstract class AbstractMessageCodec implements MessageCodec {
     @Override
-    public void encode(Object message, ByteBuf byteBuf) {
+    public void encode(Object message, ByteBuf byteBuf)  throws IOException {
         encodeBody(message, byteBuf);
     }
 
-    protected abstract void encodeBody(Object obj, ByteBuf byteBuf);
+    protected abstract void encodeBody(Object obj, ByteBuf byteBuf) throws IOException;
 
     @Override
-    public void decode(List<Object> messages, ByteBuf byteBuf) {
-        while(byteBuf.hasMore()) {
+    public void decode(List<Object> messages, ByteBuf byteBuf)  throws IOException {
+        while(byteBuf.readable()) {
             messages.add(decodeBody(byteBuf));
         }
     }
 
-    protected abstract Object decodeBody(ByteBuf byteBuf);
+    protected abstract Object decodeBody(ByteBuf byteBuf)  throws IOException;
 
 }

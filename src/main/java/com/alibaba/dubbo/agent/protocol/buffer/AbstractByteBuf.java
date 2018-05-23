@@ -9,6 +9,9 @@ public abstract class AbstractByteBuf implements ByteBuf {
     protected int writerIndex;
     protected int readerIndex;
 
+    protected int markWriterIndex;
+    protected int markReaderIndex;
+
     public AbstractByteBuf() {
         this(1024);
     }
@@ -18,12 +21,18 @@ public abstract class AbstractByteBuf implements ByteBuf {
         bytes = new byte[capacity];
     }
 
+
     public int writeInt(int d) {
         return write(Bytes.int2bytes(d));
     }
 
     public int writeLong(long d) {
         return write(Bytes.long2bytes(d));
+    }
+
+    @Override
+    public int writeShort(short d) {
+        return write(Bytes.short2bytes(d));
     }
 
     public int writeBuf(ByteBuf d) {
@@ -87,6 +96,16 @@ public abstract class AbstractByteBuf implements ByteBuf {
     }
 
     @Override
+    public void readerIndex(int readerIndex) {
+        this.readerIndex = readerIndex;
+    }
+
+    @Override
+    public void writerIndex(int writerIndex) {
+        this.writerIndex = writerIndex;
+    }
+
+    @Override
     public int writerIndex() {
         return writerIndex;
     }
@@ -95,22 +114,26 @@ public abstract class AbstractByteBuf implements ByteBuf {
         read(length);
     }
 
-    @Override
-    public boolean hasMore() {
-        return readerIndex < writerIndex;
-    }
-
     //重置写位置
     @Override
     public void resetWriterIndex() {
-        writerIndex = 0;
-
+        writerIndex(markWriterIndex);
     }
 
     //重置读位置
     @Override
     public void resetReaderIndex() {
-        readerIndex = 0;
+        readerIndex(markReaderIndex);
+    }
+
+    @Override
+    public void markReaderIndex() {
+        markReaderIndex = readerIndex;
+    }
+
+    @Override
+    public void markWriterIndex() {
+        markWriterIndex = writerIndex;
     }
 
     //重置读写位置

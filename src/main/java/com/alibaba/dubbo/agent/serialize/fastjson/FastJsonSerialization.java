@@ -39,12 +39,12 @@ public class FastJsonSerialization implements Serialization {
     }
 
     @Override
-    public ObjectOutput serialize(OutputStream output) throws IOException {
+    public ObjectOutput serialize(OutputStream output) {
         return new FastJsonObjectOutput(output);
     }
 
     @Override
-    public ObjectInput deserialize(InputStream input) throws IOException {
+    public ObjectInput deserialize(InputStream input) {
         return new FastJsonObjectInput(input);
     }
 
