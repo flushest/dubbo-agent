@@ -1,27 +1,30 @@
-package com.alibaba.dubbo.agent.protocol.dubbo;
+package com.alibaba.dubbo.agent.protocol.model;
 
 import com.alibaba.dubbo.agent.protocol.buffer.ByteBuf;
 import com.alibaba.dubbo.agent.protocol.buffer.SimpleByteBuf;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.io.Serializable;
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
- * dubbo协议报文解析
+ * 请求
  */
 @Builder
 @Getter
-public class DubboMessage {
-    private static final int PROTOCOL_IDENTIFIER = 0xdabb;
-    private boolean reqOrRes;//消息类型：true-request false-response
-    private boolean twoWay;//是否需要应答 请求时有效
+public class Request implements Serializable {
+    private static final AtomicLong REQUEST_ID_SEQUENCE = new AtomicLong(0L);
+    private boolean twoWay;//是否需要应答
     private boolean event;//是否事件消息
-    private int serializationId;//序列化类型
-    private int status;//响应状态
-    private long requestId;//唯一请求id
-    private int dataLength;//数据长度
-    private byte[] variablePart;//变长部分
+    private long id;//唯一请求id
+    private Object data;//数据对象
 
-    public void encode(ByteBuf byteBuf) {
+    public static long getNextId() {
+        return REQUEST_ID_SEQUENCE.getAndIncrement();
+    }
+
+    /*public void encode(ByteBuf byteBuf) {
         byteBuf.writeBuf(encode());
     }
 
@@ -34,7 +37,7 @@ public class DubboMessage {
         return byteBuf;
     }
 
-    public DubboMessage(ByteBuf byteBuf) {
+    public Request(ByteBuf byteBuf) {
         decodeFirstFourBytes(byteBuf);
         requestId = byteBuf.readLong();
         dataLength = byteBuf.readInt();
@@ -58,5 +61,5 @@ public class DubboMessage {
         event = (headBytes[3]&0x20)==1;//是否事件类型
         serializationId = (headBytes[3]&0x1F);//序列化方式
         status = headBytes[4];//响应状态
-    }
+    }*/
 }

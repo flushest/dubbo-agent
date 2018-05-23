@@ -16,46 +16,18 @@
  */
 package com.alibaba.dubbo.agent.serialize;
 
-
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
- * Serialization. (SPI, Singleton, ThreadSafe)
+ * Object output.
  */
-public interface Serialization {
+public interface ObjectOutput extends DataOutput {
 
     /**
-     * get content type id
+     * write object.
      *
-     * @return content type id
+     * @param obj object.
      */
-    byte getContentTypeId();
-
-    /**
-     * get content type
-     *
-     * @return content type
-     */
-    String getName();
-
-    /**
-     * create serializer
-     *
-     * @param output
-     * @return serializer
-     * @throws IOException
-     */
-    ObjectOutput serialize(OutputStream output) throws IOException;
-
-    /**
-     * create deserializer
-     *
-     * @param input
-     * @return deserializer
-     * @throws IOException
-     */
-    ObjectInput deserialize(InputStream input) throws IOException;
+    void writeObject(Object obj) throws IOException;
 
 }

@@ -30,6 +30,19 @@ public abstract class AbstractByteBuf implements ByteBuf {
         return write(d.readAll());
     }
 
+    @Override
+    public int writeByte(byte b) {
+        return write(new byte[]{b});
+    }
+
+    @Override
+    public int writeBytes(byte[] src, int index, int length) {
+        byte[] needWriteBytes = new byte[length];
+        for(int i=0; i<length; i++) {
+            needWriteBytes[i] = src[index+i];
+        }
+        return write(needWriteBytes);
+    }
 
     @Override
     public int readInt() {
@@ -43,10 +56,43 @@ public abstract class AbstractByteBuf implements ByteBuf {
         return Bytes.bytes2long(bs);
     }
 
-    //获取缓存区长度
+    public byte readByte() {
+        return read(1)[0];
+    }
+
+    public void readBytes(byte[] dst, int dstIndex, int length) {
+        if(dst.length < dstIndex + length) {
+            throw new IndexOutOfBoundsException();
+        }
+        byte[] readBytes = read(length);
+        for(int i=0; i<length; i++) {
+            dst[dstIndex+i] = readBytes[i];
+        }
+    }
+
+    //获取可用字节数
     @Override
-    public int getCapacity() {
-        return capacity;
+    public int readableBytes() {
+        return writerIndex - readerIndex;
+    }
+
+    @Override
+    public boolean readable() {
+        return readableBytes() > 0;
+    }
+
+    @Override
+    public int readerIndex() {
+        return readerIndex;
+    }
+
+    @Override
+    public int writerIndex() {
+        return writerIndex;
+    }
+
+    public void skipBytes(int length) {
+        read(length);
     }
 
     @Override
@@ -72,6 +118,12 @@ public abstract class AbstractByteBuf implements ByteBuf {
     public void reset() {
         resetWriterIndex();
         resetReaderIndex();
+    }
+
+    protected void checkReadableBytes(int minimumReadableBytes) {
+        if (readableBytes() < minimumReadableBytes) {
+            throw new IndexOutOfBoundsException();
+        }
     }
 
 

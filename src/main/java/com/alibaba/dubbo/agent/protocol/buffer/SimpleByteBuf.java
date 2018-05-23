@@ -23,11 +23,11 @@ public class SimpleByteBuf extends AbstractByteBuf {
         return bytes.length;
     }
 
+
+
     @Override
     public byte[] read(int length) {
-        if(readerIndex + length > writerIndex) {
-            throw new IllegalArgumentException("num of the others is less than the argument");
-        }
+        checkReadableBytes(length);
 
         byte[] readBytes = new byte[length];
         for(int i=0; i<length; i++) {

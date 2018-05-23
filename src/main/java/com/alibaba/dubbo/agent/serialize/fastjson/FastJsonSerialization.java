@@ -14,48 +14,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alibaba.dubbo.agent.serialize;
+package com.alibaba.dubbo.agent.serialize.fastjson;
 
+import com.alibaba.dubbo.agent.serialize.ObjectInput;
+import com.alibaba.dubbo.agent.serialize.ObjectOutput;
+import com.alibaba.dubbo.agent.serialize.Serialization;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-/**
- * Serialization. (SPI, Singleton, ThreadSafe)
- */
-public interface Serialization {
+@Component
+public class FastJsonSerialization implements Serialization {
 
-    /**
-     * get content type id
-     *
-     * @return content type id
-     */
-    byte getContentTypeId();
+    @Override
+    public byte getContentTypeId() {
+        return 6;
+    }
 
-    /**
-     * get content type
-     *
-     * @return content type
-     */
-    String getName();
+    @Override
+    public String getName() {
+        return "fastjson";
+    }
 
-    /**
-     * create serializer
-     *
-     * @param output
-     * @return serializer
-     * @throws IOException
-     */
-    ObjectOutput serialize(OutputStream output) throws IOException;
+    @Override
+    public ObjectOutput serialize(OutputStream output) throws IOException {
+        return new FastJsonObjectOutput(output);
+    }
 
-    /**
-     * create deserializer
-     *
-     * @param input
-     * @return deserializer
-     * @throws IOException
-     */
-    ObjectInput deserialize(InputStream input) throws IOException;
+    @Override
+    public ObjectInput deserialize(InputStream input) throws IOException {
+        return new FastJsonObjectInput(input);
+    }
 
 }

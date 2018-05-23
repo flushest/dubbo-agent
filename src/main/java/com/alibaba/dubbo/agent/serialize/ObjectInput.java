@@ -16,46 +16,35 @@
  */
 package com.alibaba.dubbo.agent.serialize;
 
-
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.lang.reflect.Type;
 
 /**
- * Serialization. (SPI, Singleton, ThreadSafe)
+ * Object input.
  */
-public interface Serialization {
+public interface ObjectInput extends DataInput {
 
     /**
-     * get content type id
+     * read object.
      *
-     * @return content type id
+     * @return object.
      */
-    byte getContentTypeId();
+    Object readObject() throws IOException, ClassNotFoundException;
 
     /**
-     * get content type
+     * read object.
      *
-     * @return content type
+     * @param cls object type.
+     * @return object.
      */
-    String getName();
+    <T> T readObject(Class<T> cls) throws IOException, ClassNotFoundException;
 
     /**
-     * create serializer
+     * read object.
      *
-     * @param output
-     * @return serializer
-     * @throws IOException
+     * @param cls object type.
+     * @return object.
      */
-    ObjectOutput serialize(OutputStream output) throws IOException;
-
-    /**
-     * create deserializer
-     *
-     * @param input
-     * @return deserializer
-     * @throws IOException
-     */
-    ObjectInput deserialize(InputStream input) throws IOException;
+    <T> T readObject(Class<T> cls, Type type) throws IOException, ClassNotFoundException;
 
 }

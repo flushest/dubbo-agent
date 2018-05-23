@@ -16,46 +16,7 @@
  */
 package com.alibaba.dubbo.agent.serialize;
 
+public interface Cleanable {
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-/**
- * Serialization. (SPI, Singleton, ThreadSafe)
- */
-public interface Serialization {
-
-    /**
-     * get content type id
-     *
-     * @return content type id
-     */
-    byte getContentTypeId();
-
-    /**
-     * get content type
-     *
-     * @return content type
-     */
-    String getName();
-
-    /**
-     * create serializer
-     *
-     * @param output
-     * @return serializer
-     * @throws IOException
-     */
-    ObjectOutput serialize(OutputStream output) throws IOException;
-
-    /**
-     * create deserializer
-     *
-     * @param input
-     * @return deserializer
-     * @throws IOException
-     */
-    ObjectInput deserialize(InputStream input) throws IOException;
-
+    void cleanup();
 }
