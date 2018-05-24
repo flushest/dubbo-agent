@@ -12,9 +12,21 @@ public class SerializationFactory {
         if(serializationName == null) {
             serializationName = DEFAULT_APPLICATION_SERIALIZATION;
         }
-        Serialization serialization = SerializationRegistry.getSerialization(serializationName);
+        return serialization(serializationName);
+    }
+
+    public static Serialization serialization(int id) {
+        Serialization serialization = SerializationRegistry.getSerialization(id);
         if (serialization == null) {
-            throw new IllegalStateException("无法找到序列化方式:" + serializationName);
+            throw new IllegalStateException("cannot find any serialization for id:" + id);
+        }
+        return serialization;
+    }
+
+    public static Serialization serialization(String name) {
+        Serialization serialization = SerializationRegistry.getSerialization(name);
+        if (serialization == null) {
+            throw new IllegalStateException("cannot find any serialization for name:" + name);
         }
         return serialization;
     }

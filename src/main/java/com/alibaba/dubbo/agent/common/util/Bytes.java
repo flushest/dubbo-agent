@@ -56,6 +56,19 @@ public class Bytes {
     }
 
     /**
+     * byte array copy.
+     *
+     * @param src    src.
+     * @param length new length.
+     * @return new byte array.
+     */
+    public static byte[] copyOf(byte[] src, int offset, int length) {
+        byte[] dest = new byte[length];
+        System.arraycopy(src, offset, dest, 0, Math.min(src.length, length));
+        return dest;
+    }
+
+    /**
      * to byte array.
      *
      * @param v value.

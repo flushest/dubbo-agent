@@ -61,8 +61,8 @@ public class Response implements Serializable {
     public static final byte SERVER_THREADPOOL_EXHAUSTED_ERROR = 100;
 
     private long id;//唯一请求id
-    private int status = OK;//响应状态
+    private byte status = OK;//响应状态
     private boolean event;//是否事件消息
     private String errorMsg;//错误信息
-    private Object data;//数据对象
+    private Object result;//数据对象
 }

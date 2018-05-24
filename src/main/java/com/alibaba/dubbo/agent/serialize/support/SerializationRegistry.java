@@ -24,14 +24,22 @@ import java.util.Map;
 @Slf4j
 public class SerializationRegistry {
 
-    private static final Map<String, Serialization> registrations = new HashMap<>();
+    private static final Map<String, Serialization> registrationsForName = new HashMap<>();
+    private static final Map<Byte, Serialization> registrationsForId = new HashMap<>();
+
 
     public static void registerSerialization(Serialization serialization) {
-        registrations.put(serialization.getName(), serialization);
-        log.info("成功注册Serialization:" + serialization.getName() + "->" + serialization.getClass().getName());
+        registrationsForName.put(serialization.getName(), serialization);
+        log.info("registered Serialization:" + serialization.getName() + "->" + serialization.getClass().getName());
+        registrationsForId.put(serialization.getContentTypeId(), serialization);
+        log.info("registered Serialization:" + serialization.getContentTypeId() + "->" + serialization.getClass().getName());
     }
 
     public static Serialization getSerialization(String name) {
-        return registrations.get(name);
+        return registrationsForName.get(name);
+    }
+
+    public static Serialization getSerialization(int id) {
+        return registrationsForId.get(id);
     }
 }

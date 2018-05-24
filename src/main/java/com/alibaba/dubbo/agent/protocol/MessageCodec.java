@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface MessageCodec {
     void encode(Object message, ByteBuf byteBuf)  throws IOException;
-    void decode(List<Object> messages, ByteBuf byteBuf)  throws IOException;
+    Object decode(ByteBuf byteBuf)  throws IOException;
 }

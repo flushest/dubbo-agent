@@ -3,28 +3,21 @@ package com.alibaba.dubbo.agent.protocol;
 import com.alibaba.dubbo.agent.protocol.buffer.ByteBuf;
 import com.alibaba.dubbo.agent.protocol.model.RpcInvocation;
 import com.alibaba.dubbo.agent.protocol.model.RpcResult;
+import com.alibaba.dubbo.agent.serialize.Serialization;
+import com.alibaba.dubbo.agent.serialize.support.SerializationFactory;
 
 import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by Administrator on 2018/5/19 0019.
+ * 待扩展
  */
 public abstract class AbstractMessageCodec implements MessageCodec {
-    @Override
-    public void encode(Object message, ByteBuf byteBuf)  throws IOException {
-        encodeBody(message, byteBuf);
+    protected Serialization getSerialization() {
+        return SerializationFactory.serialization();
     }
 
-    protected abstract void encodeBody(Object obj, ByteBuf byteBuf) throws IOException;
-
-    @Override
-    public void decode(List<Object> messages, ByteBuf byteBuf)  throws IOException {
-        while(byteBuf.readable()) {
-            messages.add(decodeBody(byteBuf));
-        }
+    protected Serialization getSerialization(int id) {
+        return SerializationFactory.serialization(id);
     }
-
-    protected abstract Object decodeBody(ByteBuf byteBuf)  throws IOException;
-
 }
