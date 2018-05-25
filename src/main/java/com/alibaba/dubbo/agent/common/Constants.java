@@ -18,5 +18,7 @@ public class Constants {
 
     public static final String VERSION_KEY = "version";
 
+    public static final String DEFAULT_KEY_PREFIX = "default.";
+
 
 }

@@ -1,6 +1,5 @@
 package com.alibaba.dubbo.agent.protocol.exchange;
 
-import com.alibaba.dubbo.agent.common.RpcException;
 import com.alibaba.dubbo.agent.common.util.Bytes;
 import com.alibaba.dubbo.agent.common.util.StringUtils;
 import com.alibaba.dubbo.agent.protocol.AbstractMessageCodec;
