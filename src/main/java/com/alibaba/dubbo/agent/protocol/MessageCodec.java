@@ -9,6 +9,11 @@ import java.util.List;
  * 消息编码解码接口
  */
 public interface MessageCodec {
+    String name();
     void encode(Object message, ByteBuf byteBuf)  throws IOException;
     Object decode(ByteBuf byteBuf)  throws IOException;
+
+    enum DecodeResult {
+        NEED_MORE_INPUT, SKIP_SOME_INPUT
+    }
 }

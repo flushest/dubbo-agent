@@ -18,7 +18,12 @@ public class Constants {
 
     public static final String VERSION_KEY = "version";
 
+    public static final String IO_THREADS_KEY = "iothreads";
+
+
+
     public static final String DEFAULT_KEY_PREFIX = "default.";
+    public static final int DEFAULT_IO_THREADS = Math.min(Runtime.getRuntime().availableProcessors() + 1, 32);
 
 
 }

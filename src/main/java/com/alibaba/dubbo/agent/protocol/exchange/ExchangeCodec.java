@@ -13,12 +13,14 @@ import com.alibaba.dubbo.agent.serialize.ObjectInput;
 import com.alibaba.dubbo.agent.serialize.ObjectOutput;
 import com.alibaba.dubbo.agent.serialize.Serialization;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 
 @Slf4j
+@Component
 public class ExchangeCodec extends AbstractMessageCodec {
 
     // header length.
@@ -37,6 +39,11 @@ public class ExchangeCodec extends AbstractMessageCodec {
         return MAGIC;
     }
 
+
+    @Override
+    public String name() {
+        return "exchange";
+    }
 
     @Override
     public void encode(Object message, ByteBuf byteBuf) throws IOException {
@@ -182,6 +189,9 @@ public class ExchangeCodec extends AbstractMessageCodec {
 
     @Override
     public Object decode(ByteBuf byteBuf) throws IOException {
+        if(byteBuf.readableBytes() == 0) {
+            return DecodeResult.NEED_MORE_INPUT;
+        }
         byte[] header;
         if(HEADER_LENGTH > byteBuf.readableBytes()) {
             header = new byte[4];
