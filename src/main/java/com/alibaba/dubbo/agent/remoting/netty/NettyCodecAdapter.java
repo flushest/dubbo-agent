@@ -19,6 +19,7 @@ package com.alibaba.dubbo.agent.remoting.netty;
 import com.alibaba.dubbo.agent.protocol.MessageCodec;
 import com.alibaba.dubbo.agent.protocol.buffer.ByteBuf;
 import com.alibaba.dubbo.agent.protocol.buffer.SimpleByteBuf;
+import com.alibaba.dubbo.agent.remoting.Endpoint;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -39,11 +40,11 @@ final class NettyCodecAdapter {
 
     private final MessageCodec codec;
 
-    private final NettyServer server;
+    private final Endpoint endpoint;
 
-    public NettyCodecAdapter(MessageCodec codec, NettyServer server) {
+    public NettyCodecAdapter(MessageCodec codec, Endpoint endpoint) {
         this.codec = codec;
-        this.server = server;
+        this.endpoint = endpoint;
     }
 
     public ChannelHandler getEncoder() {
@@ -59,13 +60,13 @@ final class NettyCodecAdapter {
         @Override
         protected void encode(ChannelHandlerContext ctx, Object msg, io.netty.buffer.ByteBuf out) throws Exception {
             Channel channel = ctx.channel();
-            server.addChannel(channel);
+            endpoint.addChannel(channel);
             try {
                 ByteBuf byteBuf = new SimpleByteBuf();
                 codec.encode(msg, byteBuf);
                 out.writeBytes(byteBuf.readAll());
             }finally {
-                server.removeIfDisconnect(channel);
+                endpoint.removeIfDisconnect(channel);
             }
 
         }
@@ -84,7 +85,7 @@ final class NettyCodecAdapter {
             int saveReaderIndex;
 
             Channel channel = ctx.channel();
-            server.addChannel(channel);
+            endpoint.addChannel(channel);
             try {
                 // decode object.
                 do {
@@ -108,7 +109,7 @@ final class NettyCodecAdapter {
                     }
                 } while (message.readable());
             }finally {
-                server.removeIfDisconnect(channel);
+                endpoint.removeIfDisconnect(channel);
             }
 
         }

@@ -22,7 +22,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class NettyServer extends AbstractServer {
 
     private ChannelHandler handler;
-    private Map<InetSocketAddress, Channel> remoteChannelMap = new ConcurrentHashMap<>();
     private ServerBootstrap bootstrap;
     private EventLoopGroup bossGroup;
     private EventLoopGroup workerGroup;
@@ -75,18 +74,6 @@ public class NettyServer extends AbstractServer {
     @Override
     public Channel getChannel(InetSocketAddress remoteAddress) {
         return remoteChannelMap.get(remoteAddress);
-    }
-
-    void addChannel(Channel channel) {
-        InetSocketAddress remoteAddress = (InetSocketAddress) channel.remoteAddress();
-        remoteChannelMap.putIfAbsent(remoteAddress, channel);
-    }
-
-    void removeIfDisconnect(Channel channel) {
-        if(channel != null && !channel.isActive()) {
-            InetSocketAddress remoteAddress = (InetSocketAddress) channel.remoteAddress();
-            remoteChannelMap.remove(remoteAddress);
-        }
     }
 
     @Override
